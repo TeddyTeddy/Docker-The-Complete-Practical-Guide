@@ -70,6 +70,7 @@ CONTAINER ID   IMAGE                     COMMAND           CREATED          STAT
 a7004283d430   kodekloud/simple-webapp   "python app.py"   54 seconds ago   Exited (0) 4 seconds ago             magical_jackson
 
 docker attach a7004283d430             << attaches the current terminal process to the running container
+    # we are attaching out terminal STDIN, STDOUT and STDERR to that of the container's STDIN, STDOUT and STDERR respectively
 
 # Q) how to name a container? with --name option in run command
 docker run -d --name webapp kodekloud/simple-webapp
@@ -442,3 +443,13 @@ docker run -it <container_name> sh
 
 # Q: How to run a container based on a custom image?
 docker run  -d <image_id>
+
+
+# Q: How to run automated tests inside a running container?
+(base) hakan@hakan-VirtualBox:~$ docker ps -a
+CONTAINER ID   IMAGE                   COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+8107d7a0fb2c   frontend_web-frontend   "docker-entrypoint.s…"   6 minutes ago   Up 6 minutes   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   frontend_web-frontend_1
+
+(base) hakan@hakan-VirtualBox:~$ docker exec -it frontend_web-frontend_1 sh
+~/app $ npm run test
+
